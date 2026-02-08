@@ -1,0 +1,79 @@
+// LeetCode 682 - Baseball Game
+// https://leetcode.com/problems/baseball-game/
+
+/*
+Logic:
+Use stack to store valid scores.
+
+For each operation:
+- Number → push to stack
+- "C" → remove last score (pop)
+- "D" → double last score (peek * 2 and push)
+- "+" → sum of last two scores and push back
+
+Finally sum all stack values.
+
+Why stack?
+We always need access to previous scores.
+*/
+
+           CODE
+
+// class Solution {
+//     public int calPoints(String[] operations) {
+//         Stack<Integer> stack = new Stack<>();
+
+//         for(String op : operations){
+//             if(op.equals("C")){
+//                 stack.pop();
+//             }else if(op.equals("D")){
+//                 stack.push(stack.peek() * 2);
+
+//             } else if(op.equals("+")){
+//                 int last = stack.pop();
+//                 int secondLast = stack.peek();
+//                 int sum = last + secondLast;
+                
+//                 stack.push(last);
+//                 stack.push(sum);
+//             }else{
+//                 stack.push(Integer.parseInt(op));
+//             }
+//         }
+//         int total = 0;
+//         for(int score: stack){
+//             total += score;
+//         }
+//       return total;
+//     }
+// }
+
+
+class Solution {
+    public int calPoints(String[] operations) {
+        int n = operations.length;
+        int[] stack = new int[n];
+        int top = -1;
+        for(String op : operations){
+            if(op.equals("C")){
+                top--;
+            }
+            else if(op.equals("D")){
+                stack[top+1] = 2 * stack[top];
+                top++;
+            }
+            else if(op.equals("+")){
+                stack[top+1] = stack[top-1] + stack[top];
+                top++;
+            }
+            else{
+                stack[++top] = Integer.parseInt(op);
+            }
+        }
+        int sum = 0;
+        for(int i=0;i<=top;i++){
+            sum += stack[i];
+        }
+        return sum;
+    }
+}
