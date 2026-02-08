@@ -1,3 +1,24 @@
+// LeetCode 1598 - Crawler Log Folder
+// https://leetcode.com/problems/crawler-log-folder/
+
+/*
+Logic:
+Track current folder depth.
+
+For each log:
+- "../" → move back (depth-- if > 0)
+- "./" → stay (do nothing)
+- "x/" → move into folder (depth++)
+
+Final depth = answer.
+
+Stack approach simulates folders,
+but simple counter works better.
+*/
+
+
+                  CODE
+
 // class Solution {
 //     public int minOperations(String[] logs) {
 //         Stack<String> stack = new Stack<>();
