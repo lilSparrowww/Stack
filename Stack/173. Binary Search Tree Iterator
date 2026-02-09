@@ -1,0 +1,110 @@
+# 173. Binary Search Tree Iterator
+
+https://leetcode.com/problems/binary-search-tree-iterator/description/?envType=problem-list-v2&envId=stack
+
+## 📌 Problem Summary
+Design an iterator over a Binary Search Tree (BST) that returns nodes in ascending order (inorder traversal).
+
+Functions:
+- `next()` → returns next smallest number  
+- `hasNext()` → returns if more nodes exist  
+
+---
+
+## 🧠 Core Concept — Inorder Traversal of BST
+
+Inorder traversal of a BST always produces sorted order:
+
+Left → Node → Right
+
+Instead of traversing entire tree at once, we simulate it lazily using a stack.
+
+---
+
+## 🎯 Optimal Strategy (Stack Based)
+
+1. Push all left children of root into stack  
+2. Top of stack = next smallest element  
+3. On `next()`:
+   - pop node
+   - push all left children of its right subtree  
+
+---
+
+## 📋 Algorithm Steps
+
+### Constructor:
+- Call `pushLeft(root)`
+
+### pushLeft(node):
+- While node ≠ null:
+  - push node to stack
+  - node = node.left
+
+### next():
+- pop top node
+- if popped node has right child → pushLeft(right)
+
+### hasNext():
+- return stack not empty
+
+---
+
+## ⏱ Complexity
+
+- Time: O(1) amortized per operation  
+- Space: O(h) where h = tree height  
+
+---
+
+## 🚀 Why This Works
+
+Each node is:
+- pushed once  
+- popped once  
+
+No extra traversal or full storage.
+
+---
+
+## 📌 Key Pattern Learned
+
+> Use stack to simulate inorder traversal lazily
+
+Common in tree iterators & traversal problems.
+
+---
+
+## 💻 Java Implementation
+
+```java
+class BSTIterator {
+
+    Stack<TreeNode> stack = new Stack<>();
+
+    public BSTIterator(TreeNode root) {
+        pushLeft(root);
+    }
+
+    private void pushLeft(TreeNode node) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    public int next() {
+        TreeNode node = stack.pop();
+        int val = node.val;
+
+        if (node.right != null) {
+            pushLeft(node.right);
+        }
+
+        return val;
+    }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+}
