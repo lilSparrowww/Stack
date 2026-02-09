@@ -1,0 +1,90 @@
+# 1021. Remove Outermost Parentheses
+
+https://leetcode.com/problems/remove-outermost-parentheses/description/?envType=problem-list-v2&envId=stack
+
+## 📌 Problem Summary
+Given a valid parentheses string, remove the outermost parentheses of every primitive substring.
+
+A primitive parentheses string is one that cannot be split into two non-empty valid strings.
+
+---
+
+## 🧠 Optimal Approach — Depth Counter
+
+Instead of using a stack, track the nesting level using an integer `depth`.
+
+### 👉 Idea:
+- `'('` increases depth
+- `')'` decreases depth
+- Skip the parentheses that form the outer layer of each primitive
+
+---
+
+## ✅ When to Add Characters
+
+| Character | Condition | Action |
+|----------|----------|--------|
+| `(` | depth > 0 before increment | add |
+| `)` | depth > 0 after decrement | add |
+
+Outer parentheses are ignored.
+
+---
+
+## 📋 Algorithm Steps
+
+1. Initialize `depth = 0`
+2. Traverse each character:
+   - If `'('`:
+     - if `depth > 0` → append to result  
+     - increment depth
+   - If `')'`:
+     - decrement depth  
+     - if `depth > 0` → append to result
+3. Return result string
+
+---
+
+## ⏱ Time & Space Complexity
+
+- **Time:** O(n)
+- **Space:** O(n) (for output)
+
+---
+
+## 🚀 Why Not Stack?
+
+- Stack uses extra memory
+- Slower than integer counter
+- Not needed since string is guaranteed valid
+
+---
+
+## 📌 Key Pattern Learned
+
+> Track nesting depth and ignore the outermost layer
+
+Useful in many parentheses and string parsing problems.
+
+---
+
+## 💻 Java Implementation
+
+```java
+class Solution {
+    public String removeOuterParentheses(String s) {
+        StringBuilder result = new StringBuilder();
+        int depth = 0;
+
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') {
+                if (depth > 0) result.append(ch);
+                depth++;
+            } else {
+                depth--;
+                if (depth > 0) result.append(ch);
+            }
+        }
+        return result.toString();
+    }
+}
