@@ -1,0 +1,91 @@
+# 94. Binary Tree Inorder Traversal
+
+https://leetcode.com/problems/binary-tree-inorder-traversal/description/?envType=problem-list-v2&envId=stack
+
+## 📌 Problem Summary
+Return the inorder traversal of a binary tree.
+
+Inorder traversal follows the order:
+
+Left → Node → Right
+
+---
+
+## 🧠 Core Concept
+
+Inorder traversal visits nodes in sorted-like structure for BSTs and structured order for any binary tree.
+
+Two common approaches:
+- Recursive (uses call stack)
+- Iterative using Stack (optimal & interview preferred)
+
+---
+
+## ✅ Optimal Approach — Iterative (Stack)
+
+### 🎯 Idea:
+Simulate recursion manually using stack.
+
+---
+
+### 📋 Algorithm
+
+1. Initialize empty stack and set `curr = root`
+2. While `curr != null` OR stack not empty:
+   - Push all left nodes into stack
+   - Pop top node and add its value to result
+   - Move to right child
+3. Repeat until done
+
+---
+
+### ⏱ Complexity
+
+Time: O(n)  
+Space: O(h) where h is tree height
+
+---
+
+### 💻 Java Implementation (Iterative)
+
+```java
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+
+            curr = stack.pop();
+            result.add(curr.val);
+
+            curr = curr.right;
+        }
+
+        return result;
+    }
+}
+
+
+### 💻 Java Implementation (Recursive)
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        inorder(root, result);
+        return result;
+    }
+
+    private void inorder(TreeNode node, List<Integer> result) {
+        if (node == null) return;
+
+        inorder(node.left, result);   // left
+        result.add(node.val);         // node
+        inorder(node.right, result);  // right
+    }
+}
+
