@@ -1,0 +1,108 @@
+# 145. Binary Tree Postorder Traversal
+
+🔗 LeetCode Problem: https://leetcode.com/problems/binary-tree-postorder-traversal/
+
+---
+
+## 📌 Problem Summary
+
+Return the postorder traversal of a binary tree.
+
+Postorder follows the order:
+
+Left → Right → Node
+
+---
+
+## 🧠 Core Concept
+
+Postorder visits the root **after** both subtrees are processed.
+
+Two ways to implement:
+- Recursive (DFS)
+- Iterative using Stack (optimal & interview preferred)
+
+---
+
+# ✅ Optimal Approach – Iterative (Stack)
+
+### 🎯 Idea:
+Simulate recursion manually.
+
+Go left first, then right, and only visit node when both children are done.
+
+Use `lastVisited` to track processed nodes.
+
+---
+
+## 📋 Algorithm
+
+1. Initialize stack, `curr = root`, `lastVisited = null`
+2. While `curr != null` or stack not empty:
+   - While `curr != null`:
+     - Push to stack
+     - Move left
+   - Peek stack:
+     - If right exists & not visited → move right
+     - Else:
+       - Add node value
+       - Pop and mark visited
+3. Repeat until finished
+
+---
+
+## ⏱ Complexity
+
+Time: O(n)  
+Space: O(h)
+
+---
+
+## 💻 Java Implementation (Iterative)
+
+```java
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        TreeNode lastVisited = null;
+
+        while (curr != null || !stack.isEmpty()) {
+
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+
+            TreeNode peek = stack.peek();
+
+            if (peek.right != null && lastVisited != peek.right) {
+                curr = peek.right;
+            } else {
+                result.add(peek.val);
+                lastVisited = stack.pop();
+            }
+        }
+
+        return result;
+    }
+}
+
+
+Java Implementation (Recursive)
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        postorder(root, result);
+        return result;
+    }
+
+    private void postorder(TreeNode node, List<Integer> result) {
+        if (node == null) return;
+
+        postorder(node.left, result);
+        postorder(node.right, result);
+        result.add(node.val);
+    }
+}
