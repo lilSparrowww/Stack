@@ -1,0 +1,69 @@
+# 🌡️ 739. Daily Temperatures  
+
+## 🔗 Problem Link  
+https://leetcode.com/problems/daily-temperatures/
+
+---
+
+## 📌 Problem Summary  
+
+You are given an array `temperatures` where `temperatures[i]` represents the temperature on the ith day.
+
+For each day, find how many days you must wait until a warmer temperature.  
+If no warmer day exists, put `0`.
+
+---
+
+## 🧠 Key Insight  
+
+This is a **Next Greater Element** type problem.
+
+We use a **monotonic decreasing stack** to track unresolved days.
+
+The stack stores indices of days whose warmer temperature hasn’t been found yet.
+
+---
+
+## 🚀 Optimal Approach (Monotonic Stack – Right to Left)
+
+### Idea:
+
+Process the array from the **right side**.
+
+For each day:
+
+1. Remove all days from stack that are not warmer  
+2. Top of stack gives next warmer day  
+3. Distance = stack.peek() - current index  
+4. Push current index  
+
+---
+
+## 💻 Java Implementation  
+
+```java
+import java.util.Stack;
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        Deque<int[]> st = new ArrayDeque<>();
+        int n = temperatures.length;
+        int res[] = new int[n];
+
+        for(int i=n-1; i>=0; i--){
+            while(!st.isEmpty() && st.peek()[0]<=temperatures[i]){
+                st.pop();
+            }
+            if(st.isEmpty()){
+                res[i] = 0;
+                st.push(new int[]{temperatures[i],i});
+                continue;
+            }
+
+            res[i] = st.peek()[1]-i;
+            st.push(new int[]{temperatures[i],i});
+        } 
+
+        return res;
+    }
+}
